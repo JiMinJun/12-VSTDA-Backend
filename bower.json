@@ -1,0 +1,27 @@
+{
+  "name": "07-VSTDA",
+  "main": "index.js",
+  "homepage": "https://github.com/JiMinJun/07-VSTDA",
+  "authors": [
+    "Gloria Jun <jiminisme@gmail.com>"
+  ],
+  "description": "Very Simple ToDo App",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "^1.5.5"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "angular-ui-sortable": "^0.14.0",
+    "angular-xeditable": "^0.1.12",
+    "moment": "^2.13.0"
+  }
+}

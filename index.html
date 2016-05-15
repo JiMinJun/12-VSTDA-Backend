@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<title>Simple ToDo App</title>
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/angular-xeditable/dist/css/xeditable.css" >
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body ng-app="VSTDApp" ng-controller="VSTDACtrl as vm">
+	<div class="container">
+		<div class="panel panel-info">
+			<div class="panel-heading">Add ToDo todo</div>
+			<div class="panel-body">
+				<div>
+					<label for="toDotodo">To Do todo: </label></br>
+					<input type="text" ng-model="vm.newToDo.description" id="toDotodo">
+				</div>
+				<div>
+					<label for"toDoPriority">Priority: </label></br>
+					<select ng-model="vm.newToDo.priority" id="toDoPriority">
+						<option value="1">1. Urgent</option>
+						<option value="2">2. Very High</option>
+						<option value="3">3. High</option>
+						<option value="4">4. Moderate</option>
+						<option value="5">5. Low</option>
+					</select>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<button type="button" class="btn btn-primary" ng-click="vm.addToDo(vm.newToDo)">Add ToDo</button>
+			</div>
+		</div>
+	</div>
+
+<!-- 	Display todolist -->
+	<div class="container">
+		<table id="toDoTable" class="table table-bordered" click-outside="vm.closeTable()">
+			<thead><td><b>ToDo List: <b></td></thead>
+			<tbody ui-sortable ng-model="vm.toDoList">
+				<div class="btn-group" role="group">
+				  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('priority')">Order by Highest Priority</button>
+				  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('-priority')">Order by Lowest Priority</button>
+				  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('description')">Order Alphabetically</button>
+				</div>
+				<tr ng-repeat="todo in vm.toDoList track by $index" ng-class="{urgent: todo.priority == 1, veryhigh: todo.priority == 2, high: todo.priority == 3, moderate: todo.priority == 4, low: todo.priority == 5, complete: todo.priority == 9 }">
+					<td ng-click="vm.closeAllOthertodos(todo.vstdaEntryId)"> 
+						<label for "editing-label" ng-click="todo.isBeingEdited = true">{{todo.description}}</label>
+						<!-- <label><input type="checkbox" id="complete" ng-click="todo.priority='9. complete'">Done</label> -->
+						<div ng-show="todo.isBeingEdited">
+							<input class="editing-label" type="text" ng-model="todo.updatedDescription">
+							<select ng-model="todo.updatedPriority">
+								<option value="1">1. Urgent</option>
+								<option value="2">2. Very High</option>
+								<option value="3">3. High</option>
+								<option value="4">4. Moderate</option>
+								<option value="5">5. Low</option>
+							</select>
+<!-- 							delete todo item -->
+							<button class="btn btn-primary pull-right" ng-click="vm.deleteToDo(todo, $index)">Delete</button>
+
+							<button type="btn" class='btn btn-primary pull-right' ng-click="vm.saveToDo(todo)" >Save</button>
+						</div>				
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.js"></script>	
+	<script type="text/javascript" src="bower_components/angular-ui-sortable/sortable.js"></script>
+	<script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+	<script type="text/javascript" src="bower_components/angular-click-outside/clickoutside.directive.js"></script>
+	<script type="text/javascript" src="bower_components/moment/moment.js"></script>
+	<script type="text/javascript" src="app/index.js"></script>
+	<script type="text/javascript" src="app/VSTDA.ctrl.js"></script>
+	<script type="text/javascript" src="app/VSTDA.factory.js"></script>
+</body>
+</html>
