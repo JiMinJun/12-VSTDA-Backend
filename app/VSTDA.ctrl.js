@@ -9,15 +9,12 @@
 
 	    function VSTDACtrl(VSTDAFactory, $filter) {
 	        var vm = this;
-	        vm.title = 'VSTDACtrl';
-	        vm.newToDo = {};
-	        
+	        vm.title = 'VSTDACtrl';	        
 
 	        ////////////////
 	        var getToDoData = function() {
 	        	VSTDAFactory.getToDoData().then(function (response) {
 	        		vm.toDoList = response.data;
-	        		console.log(response.data);
 	        	});
 	        };
 
@@ -55,7 +52,7 @@
 	        	if (!todo.updatedTodo) {
 	        		todo.updatedDescription = todo.description;
 	        	}
-	        	
+
 	        	console.log(todo);
 	        	var updatedTodo = {
 	        		'vstdaEntryId' : todo.vstdaEntryId,

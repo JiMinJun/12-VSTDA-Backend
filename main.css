@@ -8,10 +8,8 @@ select {
 	border-radius: 5px;
 }
 
-.container {
-	padding: 2em 1em;
-	float: left;
-	max-width: 45%;
+.jumbotron {
+  margin-top: 2em;
 }
 
 .btn-group {

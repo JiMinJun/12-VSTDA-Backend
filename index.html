@@ -7,65 +7,70 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
-<body ng-app="VSTDApp" ng-controller="VSTDACtrl as vm">
+<body ng-app="VSTDApp" ng-controller="VSTDACtrl as vm" background="chalkboard.jpg" >
 	<div class="container">
-		<div class="panel panel-info">
-			<div class="panel-heading">Add ToDo todo</div>
-			<div class="panel-body">
-				<div>
-					<label for="toDotodo">To Do todo: </label></br>
-					<input type="text" ng-model="vm.newToDo.description" id="toDotodo">
+	  <h1>Very Simple ToDo App</h1>  
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="panel panel-info" >
+				<div class="panel-heading">Todo List</div>
+				<div class="panel-body" >
+					<table id="toDoTable" class="table table-bordered" click-outside="vm.closeTable()">
+						<thead><td><b>ToDo List: <b></td></thead>
+						<tbody ui-sortable ng-model="vm.toDoList">
+							<div class="btn-group" role="group">
+							  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('priority')">Order by Highest Priority</button>
+							  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('-priority')">Order by Lowest Priority</button>
+							  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('description')">Order Alphabetically</button>
+							</div>
+							<tr ng-repeat="todo in vm.toDoList track by $index" ng-class="{urgent: todo.priority == 1, veryhigh: todo.priority == 2, high: todo.priority == 3, moderate: todo.priority == 4, low: todo.priority == 5, complete: todo.priority == 9 }">
+								<td ng-click="vm.closeAllOthertodos(todo.vstdaEntryId)"> 
+									<label for "editing-label" ng-click="todo.isBeingEdited = true">{{todo.description}}</label>
+									<!-- <label><input type="checkbox" id="complete" ng-click="todo.priority='9. complete'">Done</label> -->
+									<div ng-show="todo.isBeingEdited">
+										<input class="editing-label" type="text" ng-model="todo.updatedDescription">
+										<select ng-model="todo.updatedPriority">
+											<option value="1">1. Urgent</option>
+											<option value="2">2. Very High</option>
+											<option value="3">3. High</option>
+											<option value="4">4. Moderate</option>
+											<option value="5">5. Low</option>
+										</select>
+			<!-- 							delete todo item -->
+										<button class="btn btn-primary pull-right" ng-click="vm.deleteToDo(todo, $index)">Delete</button>
+
+										<button type="btn" class='btn btn-primary pull-right' ng-click="vm.saveToDo(todo)" >Save</button>
+									</div>				
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class= "panel-footer">
+						<form class="form-inline">
+						    <div class="form-group">
+						        <label for="newToDoDescription">New ToDo Item: </label>
+						        <input type="text" ng-model="vm.newToDo.description" id="newToDoDescription">
+						    </div>
+						    <div class="form-group">
+						        <label for"newToDoPriority">Priority: </label>
+						        <select ng-model="vm.newToDo.priority" id="newToDoPriority">
+								    <option value="1">1. Urgent</option>
+								    <option value="2">2. Very High</option>
+								    <option value="3">3. High</option>
+								    <option value="4">4. Moderate</option>
+								    <option value="5">5. Low</option>
+							    </select>
+						    </div>
+						    <button type="button" class="btn btn-primary" ng-click="vm.addToDo(vm.newToDo)">Add ToDo</button>
+						</form>						
+					</div>
 				</div>
-				<div>
-					<label for"toDoPriority">Priority: </label></br>
-					<select ng-model="vm.newToDo.priority" id="toDoPriority">
-						<option value="1">1. Urgent</option>
-						<option value="2">2. Very High</option>
-						<option value="3">3. High</option>
-						<option value="4">4. Moderate</option>
-						<option value="5">5. Low</option>
-					</select>
-				</div>
-			</div>
-			<div class="panel-footer">
-				<button type="button" class="btn btn-primary" ng-click="vm.addToDo(vm.newToDo)">Add ToDo</button>
 			</div>
 		</div>
 	</div>
 
 <!-- 	Display todolist -->
-	<div class="container">
-		<table id="toDoTable" class="table table-bordered" click-outside="vm.closeTable()">
-			<thead><td><b>ToDo List: <b></td></thead>
-			<tbody ui-sortable ng-model="vm.toDoList">
-				<div class="btn-group" role="group">
-				  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('priority')">Order by Highest Priority</button>
-				  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('-priority')">Order by Lowest Priority</button>
-				  <button type="button" class="btn btn-primary" ng-click="vm.sortToDo('description')">Order Alphabetically</button>
-				</div>
-				<tr ng-repeat="todo in vm.toDoList track by $index" ng-class="{urgent: todo.priority == 1, veryhigh: todo.priority == 2, high: todo.priority == 3, moderate: todo.priority == 4, low: todo.priority == 5, complete: todo.priority == 9 }">
-					<td ng-click="vm.closeAllOthertodos(todo.vstdaEntryId)"> 
-						<label for "editing-label" ng-click="todo.isBeingEdited = true">{{todo.description}}</label>
-						<!-- <label><input type="checkbox" id="complete" ng-click="todo.priority='9. complete'">Done</label> -->
-						<div ng-show="todo.isBeingEdited">
-							<input class="editing-label" type="text" ng-model="todo.updatedDescription">
-							<select ng-model="todo.updatedPriority">
-								<option value="1">1. Urgent</option>
-								<option value="2">2. Very High</option>
-								<option value="3">3. High</option>
-								<option value="4">4. Moderate</option>
-								<option value="5">5. Low</option>
-							</select>
-<!-- 							delete todo item -->
-							<button class="btn btn-primary pull-right" ng-click="vm.deleteToDo(todo, $index)">Delete</button>
-
-							<button type="btn" class='btn btn-primary pull-right' ng-click="vm.saveToDo(todo)" >Save</button>
-						</div>				
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
 	
 	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.js"></script>
