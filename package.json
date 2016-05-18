@@ -1,0 +1,22 @@
+{
+  "name": "12-vstda-backend",
+  "version": "1.0.0",
+  "description": "very simple to do app utilizing entity c# api",
+  "main": "index.js",
+  "scripts": { "test": "karma start karma.conf.js" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JiMinJun/12-VSTDA-Backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JiMinJun/12-VSTDA-Backend/issues"
+  },
+  "homepage": "https://github.com/JiMinJun/12-VSTDA-Backend#readme",
+  "devDependencies": { 
+    "jasmine-core": "^2.3.4", 
+    "karma": "^0.12.31", 
+    "karma-chrome-launcher": "^0.1.12", 
+    "karma-jasmine": "^0.3.5" }
+  }

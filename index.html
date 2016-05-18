@@ -5,6 +5,7 @@
 	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="bower_components/angular-xeditable/dist/css/xeditable.css" >
 	<link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cabin+Sketch:700,400'>
+	<link rel="stylesheet" href="bower_components/toastr/toastr.css" />
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 
@@ -39,7 +40,7 @@
 							<tr ng-repeat="todo in vm.toDoList track by $index" ng-class="{urgent: todo.priority == 1, high: todo.priority == 2, moderate: todo.priority == 3, low: todo.priority == 4, complete: todo.priority == 9 }">
 								<td ng-click="vm.closeAllOtherItems(todo.vstdaEntryId)">
 									<!-- <input type="checkbox" class="css-checkbox" ng-click="vm.completedItem(todo)">	 -->							 
-									<label for "editing-label" ng-click="todo.isBeingEdited = true">{{todo.description}} </label>
+									<label for "editing-label" ng-click="todo.isBeingEdited = true"> {{todo.description}} </label>
 									
 									<div ng-show="todo.isBeingEdited" class="editing">
 										<input class="editing-label" type="text" ng-model="todo.updatedDescription">
@@ -58,7 +59,7 @@
 							</tr>
 						</tbody>
 					</table>
-					
+
 					<div class= "panel-footer">
 						<form class="form-inline">
 						    <div class="form-group">
@@ -91,7 +92,8 @@
 	<script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 	<script type="text/javascript" src="bower_components/angular-click-outside/clickoutside.directive.js"></script>
 	<script type="text/javascript" src="bower_components/moment/moment.js"></script>
-	<script type="text/javascript" src="app/index.js"></script>
+	<script type="text/javascript" src="bower_components/toastr/toastr.js"></script>
+	<script type="text/javascript" src="app/app.js"></script>
 	<script type="text/javascript" src="app/VSTDA.ctrl.js"></script>
 	<script type="text/javascript" src="app/VSTDA.factory.js"></script>
 </body>

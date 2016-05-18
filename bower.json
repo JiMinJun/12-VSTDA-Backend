@@ -16,12 +16,14 @@
     "tests"
   ],
   "devDependencies": {
-    "angular": "^1.5.5"
+    "angular": "^1.5.5",
+    "angular-mocks": "^1.5.5"
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
     "angular-ui-sortable": "^0.14.0",
     "angular-xeditable": "^0.1.12",
-    "moment": "^2.13.0"
+    "moment": "^2.13.0",
+    "toastr": "^2.1.2"
   }
 }

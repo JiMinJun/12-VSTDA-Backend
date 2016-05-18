@@ -18,8 +18,9 @@
 	        		url: vstdaUrl
 	        	}).then(function (response) {
 	        		defer.resolve(response);
-	        	}),function(toDoData) {
-	        		defer.reject(toDoData);
+	        	}),function(error) {
+	        		defer.reject(error);
+	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
 	        	}
 
 	        	return defer.promise;
@@ -35,8 +36,9 @@
 	        		data: newToDoEntry
 	        	}).then(function(response) {
 	        		defer.resolve(response);
-	        	}),function(toDoData) {
-	        		defer.reject(toDoData);
+	        	}),function(error) {
+	        		defer.reject(error);
+	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
 	        	}
 	        	return defer.promise;
 	        };
@@ -50,7 +52,9 @@
 	        		data: todoId
 	        	}).then (function (response) {
 	        		defer.resolve(response);
-	        	})
+	        		},function(error) {
+	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
+	             	})
 
 	        	return defer.promise;
 	        };
@@ -64,10 +68,13 @@
 					url: vstdaUrl + '/' + todo.vstdaEntryId,
 					data: todo
 				}).then (function (response) {
-					defer.resolve(response.config.data);
+					defer.resolve(response.config.data);	
+				},function(error) {
+					toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
 				})
+
 				return defer.promise;
-			}
+			};
 	        return {
 	            getToDoData: getToDoData,
 	            addToDoData: addToDoData,

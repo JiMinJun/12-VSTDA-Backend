@@ -22,7 +22,7 @@
 //add new ToDo. throws error if already exists
 	        vm.addToDo = function(newToDo) {
 	        	if (!newToDo.description ) {
-	        		alert("Please provide a description and priority of the ToDo item you want to add.");
+	        		alert("Please provide a description of the ToDo item you want to add.");
 	        		return;
 	        	}
         		vm.toDoList.forEach(function(todo) {
@@ -43,7 +43,8 @@
 	        vm.deleteToDo = function(todo, index) {
 	        	VSTDAFactory.deleteToDoData(todo.vstdaEntryId)
 	        	.then(function (response) {
-	        		vm.toDoList.splice(index, 1);	        	
+	        		vm.toDoList.splice(index, 1);
+	        		console.log(response);	        	
 	        	});
 	        };
 
@@ -53,7 +54,7 @@
 	        		todo.updatedPriority = todo.priority;
 	        	}*/
 
-	        	if (!todo.updatedTodo) {
+	        	if (!todo.updatedDescription) {
 	        		todo.updatedDescription = todo.description;
 	        	}
 
@@ -67,21 +68,24 @@
 
 	        	VSTDAFactory.saveToDoData(updatedTodo)
 	        	.then(function(response) {
+
 	        		vm.toDoList.forEach(function(element) {
 	        			if (response.vstdaEntryId == element.vstdaEntryId) {
 	        				element.description = response.description;
 	        				element.priority = response.priority;
 	        			};
 	        			vm.closeTable();
+	        			todo.updatedDescription = null;
+	        			todo.updatedPriority = null;
 	        		});
 	        	});
-	        }
+	        };
 
-	        vm.completedItem = function (todo) {
+/*	        vm.completedItem = function (todo) {
 	        	todo.oldPriority = todo.priority;
 	        	todo.updatedPriority = 9;
 	        	vm.saveToDo(todo);
-	        }
+	        }*/
 //order items
 			vm.sortToDo = function (order) {
 		        vm.toDoList = $filter('orderBy')(vm.toDoList, order);
