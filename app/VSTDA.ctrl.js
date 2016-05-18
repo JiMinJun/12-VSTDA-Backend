@@ -6,14 +6,15 @@
         .controller('VSTDACtrl', [
         'VSTDAFactory',
         '$filter',
+        'toastr',
 
-	    function VSTDACtrl(VSTDAFactory, $filter) {
+	    function VSTDACtrl(VSTDAFactory, $filter, toastr) {
 	        var vm = this;
 	        vm.title = 'VSTDACtrl';	        
 
 	        ////////////////
 //get ToDoData. called on activate
-	        var getToDoData = function() {
+	        vm.getToDo = function() {
 	        	VSTDAFactory.getToDoData().then(function (response) {
 	        		vm.toDoList = response.data;
 	        	});
@@ -21,21 +22,32 @@
 
 //add new ToDo. throws error if already exists
 	        vm.addToDo = function(newToDo) {
+	        	//if no description is provided do not add item
 	        	if (!newToDo.description ) {
 	        		alert("Please provide a description of the ToDo item you want to add.");
 	        		return;
 	        	}
+	        	//if same todItem already exists to not add item
+	        	var duplicate = false;
         		vm.toDoList.forEach(function(todo) {
         			if(newToDo.description == todo.description) {
         				alert("This item already exists");
+        				duplicate = true;
         			}
         		})
-        	
+        		if (duplicate === true) {
+        			return;
+        		}	
+
 	        	newToDo.CreatedTime = moment().format('YYYY-MM-DD h:mm:ss a');
+
 	        	VSTDAFactory.addToDoData(newToDo).then(function (response) {
 	        		vm.toDoList.push(response.data);
 	        		console.log(vm.toDoList);
-	        	});
+	        	}),function(error) {
+	        		console.log(error);
+	        		alert("There was an error adding the newToDo item");
+	        	};
 	        	vm.newToDo = {};
 	        };
 
@@ -44,21 +56,25 @@
 	        	VSTDAFactory.deleteToDoData(todo.vstdaEntryId)
 	        	.then(function (response) {
 	        		vm.toDoList.splice(index, 1);
-	        		console.log(response);	        	
+	        		console.log(response);
+	        		toastr.success('"'+ response.data.description + '"' + " was deleted");	        	
+	        	},function(error) {
+	        		toastr.warning("This item could not be deleted. Please try again later");
+	        		console.log(error);
 	        	});
 	        };
 
 //updated todo
 	        vm.saveToDo = function (todo) {
-	        	/*if (!todo.updatedPriority) {
-	        		todo.updatedPriority = todo.priority;
-	        	}*/
 
 	        	if (!todo.updatedDescription) {
 	        		todo.updatedDescription = todo.description;
 	        	}
 
-	        	console.log(todo);
+	        	if (!todo.updatedPriority) {
+	        		todo.updatedPriority = 0;
+	        	}
+
 	        	var updatedTodo = {
 	        		'vstdaEntryId' : todo.vstdaEntryId,
 	        		'description' : todo.updatedDescription,
@@ -88,6 +104,7 @@
 	        }*/
 //order items
 			vm.sortToDo = function (order) {
+
 		        vm.toDoList = $filter('orderBy')(vm.toDoList, order);
 		    };
 
@@ -109,12 +126,5 @@
 		    		}
 		    	});
 		    };
-
-//upon page load
-		    function activate() {
-	        	getToDoData();
-	        };
-
-	        activate();
 	    }])
 })();

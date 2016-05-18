@@ -23,7 +23,7 @@ module.exports = function(config) {
       'bower_components/angular-xeditable/dist/js/xeditable.js',
       'bower_components/angular-click-outside/clickoutside.directive.js',
       'bower_components/moment/moment.js',
-      'bower_components/toastr/toastr.js',
+      'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       'app/app.js',
       'app/VSTDA.ctrl.js',
       'app/VSTDA.factory.js',

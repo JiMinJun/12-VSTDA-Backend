@@ -6,5 +6,6 @@
         'ui.sortable', 
         'xeditable', 
         'angular-click-outside',
+        'toastr'
         ]);
 })();

@@ -1,31 +1,34 @@
+
+
 body {
   background: url(chalkboard.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
+/*  -webkit-background-size: cover;
   -moz-background-size: cover;
-  -o-background-size: cover;
+  -o-background-size: cover;*/
   background-size: cover;
 }
 
-h3 {
+h2 {
+  margin-top: 33%;
   text-align: left;
   font-family: 'Cabin Sketch', cursive;
   font-weight: 700;
-  display: inline-block;
+  display: inline;
 }
 
 span {
-  display: inline-block;
-  margin-left: 45%;
+  display: inline;
+  margin-left: 40%;
 }
 
 .jumbotron {
+  color: white;
   text-align: center;
   margin-top: 1em;
   background: none;
 
   font-family: 'Cabin Sketch', cursive;
   font-weight: 700;
-
 
 }
 
@@ -38,10 +41,12 @@ tr {
   font-weight: 700;
 }
 
-.editing {
-  display: inline;
-  margin-left: 5rem;
-  
+select {
+  margin-right: 1rem;
+}
+
+input {
+  margin-right: 1rem;
 }
 
 .urgent {
@@ -64,16 +69,16 @@ tr {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffcf8e3', endColorstr='#fff8efc0', GradientType=0);
   background-repeat: repeat-x;
   border-color: #f5e79e;*/
-}
+
 
 .high {
-	background-image: -webkit-linear-gradient(top, #E9DEFF 0%, #EAeEF0 100%);
-  background-image:      -o-linear-gradient(top, #E9DEFF 0%, #EAeEF0 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#E9DEFF), to(#E9DEFF));
-  background-image:         linear-gradient(to bottom, #E9DEFF 0%, #E9DEFF 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2dede', endColorstr='#ffe7c3c3', GradientType=0);
+	background-image: -webkit-linear-gradient(top, #fcf8e3 0%, #f8efc0 100%);
+  background-image:      -o-linear-gradient(top, #fcf8e3 0%, #f8efc0 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#fcf8e3), to(#f8efc0));
+  background-image:         linear-gradient(to bottom, #fcf8e3 0%, #f8efc0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffcf8e3', endColorstr='#fff8efc0', GradientType=0);
   background-repeat: repeat-x;
-  border-color: #dca7a7;
+  border-color: #f5e79e;*/
 }
 
 .moderate {
@@ -97,8 +102,8 @@ tr {
   border-color: #b2dba1;
 }
 
-.complete {
+/*.complete {
   background-color: lightgrey;
   text-decoration: line-through; 
   font-style: italic; 
-}
+}*/

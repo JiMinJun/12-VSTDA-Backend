@@ -6,7 +6,8 @@
         .factory('VSTDAFactory', [
     	'$http',
     	'$q',
-	    function VSTDAFactory($http, $q) {
+    	'toastr',
+	    function VSTDAFactory($http, $q, toastr) {
 	    	var vstdaUrl = 'http://localhost:54111/api/VSTDAEntries'
 
 //get ToDo activates upon load
@@ -52,9 +53,10 @@
 	        		data: todoId
 	        	}).then (function (response) {
 	        		defer.resolve(response);
-	        		},function(error) {
+	        	},function(error) {
+	        		defer.reject(error);
 	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
-	             	})
+	            })
 
 	        	return defer.promise;
 	        };
@@ -70,7 +72,7 @@
 				}).then (function (response) {
 					defer.resolve(response.config.data);	
 				},function(error) {
-					toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
+					toastr.error('error: ' + error.config.data + '<br/>status: ' + error.statusText);
 				})
 
 				return defer.promise;

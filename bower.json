@@ -24,6 +24,7 @@
     "angular-ui-sortable": "^0.14.0",
     "angular-xeditable": "^0.1.12",
     "moment": "^2.13.0",
-    "toastr": "^2.1.2"
+    "toastr": "^2.1.2",
+    "angular-toastr": "^1.7.0"
   }
 }
