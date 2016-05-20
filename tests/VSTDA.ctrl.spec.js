@@ -1,5 +1,4 @@
 'use strict';
-
 describe ("VSTDA controller tests", function() {
 
 	beforeEach(module('VSTDApp'));
@@ -17,7 +16,13 @@ describe ("VSTDA controller tests", function() {
 			$scope = _$rootScope_.$new();
 			$controller = _$controller_;
 			$q = _$q_;	
-			VSTDAFactory = _VSTDAFactory_;	
+			VSTDAFactory = _VSTDAFactory_;
+			toastr = {
+			      success: function (message, title, options) { },
+			      warning: function (message, title, options) { }
+			};
+			spyOn(toastr, 'success');
+			spyOn(toastr, 'warning');	
 		}));
 
 		//tests getToDoData
@@ -37,12 +42,12 @@ describe ("VSTDA controller tests", function() {
 
 		//should succeed if given an array
 			it("should return an array of todo items", function () {
-				defer.resolve({data: [{description: 'unit test'}]});
+				defer.resolve({data: [{description: 'unit test', priority: 3, updatedPriority: 3}]});
 				vm.getToDo();
 				$scope.$apply();
 
 				expect(vm.toDoList).not.toBe(undefined);
-				expect(vm.toDoList).toEqual([{description: 'unit test'}]);
+				expect(vm.toDoList).toEqual([{description: 'unit test', priority: 3, updatedPriority: 3}]);
 				expect(vm.toDoList[0].description).toBe('unit test');
 			});
 
@@ -126,13 +131,7 @@ describe ("VSTDA controller tests", function() {
 				defer = $q.defer();
 				spyOn(VSTDAFactory, 'deleteToDoData').and.returnValue(defer.promise);
 				
-			    toastr = {
-			      success: function (message, title, options) { },
-			      warning: function (message, title, options) { }
-			    };
-
-			    spyOn(toastr, 'success');
-			    spyOn(toastr, 'warning');
+			    
 				vm = $controller('VSTDACtrl', {
 					$scope: $scope,
 					VSTDAFactory: VSTDAFactory,
@@ -148,34 +147,81 @@ describe ("VSTDA controller tests", function() {
 
 				expect(vm.toDoList).toEqual([]); 
 				expect(toastr.success).toHaveBeenCalled();
-			})
+			});
 			it("should not delete the todoitem from the list", function() {
 				defer.reject();
 				vm.deleteToDo(1,0);
 				$scope.$apply();
 				expect(toastr.warning).toHaveBeenCalled();
-			})
-		})
+			});
+		});
 		describe("the saveToDo function tests", function() {
+			var todo;
 			beforeEach(inject(function() {
 				defer = $q.defer();
 				spyOn(VSTDAFactory, 'saveToDoData').and.returnValue(defer.promise);
 
 				vm = $controller('VSTDACtrl', {
-					$scope: $scope;
-					VSTDAFactory: VSTDAFactory 
+					$scope: $scope,
+					VSTDAFactory: VSTDAFactory,
+					toastr, toastr
 				});
-			}))
-			it("should update the todo item", function() {
-				var todo = {
+				todo = {
+					vstdaEntryId: 1,
 					description: 'unit test',
-					updatedDescription : null;
-				}
+					updatedDescription : null,
+					updatedPriority: 3,
+					createdTime: '1:00am',
+					isBeingEdited: false
+				};
+				vm.toDoList = [{vstdaEntryId: 1, description: 'saveOverThis', priority: 1, createdTime: '1:00am'}];
+			}));
+			it("should update the todo item with unchanged description if no updatedDescription", function() {			
 				vm.saveToDo(todo);
-				
-			})
-		})
+				defer.resolve({vstdaEntryId: 1, description: 'unit test', priority: 3, createdTime: '1:00am' });
+				$scope.$apply();
 
+				expect(VSTDAFactory.saveToDoData).toHaveBeenCalledWith({vstdaEntryId: 1, description: 'unit test', priority: 3, createdTime: '1:00am'});
+				expect(vm.toDoList[0].description).toEqual('unit test');
+				expect(vm.toDoList[0].priority).toEqual(3);
+				expect(todo.updatedDescription).toEqual(null);
+			});
+			it("should not update the todo item",function () {
+				defer.reject();
+				vm.saveToDo(todo);
+				$scope.$apply();
+
+				expect(VSTDAFactory.saveToDoData).toHaveBeenCalled();
+				expect(vm.toDoList[0].description).toBe("saveOverThis");
+				expect(vm.toDoList[0].updatedPriority).toBe(undefined);
+				expect(vm.toDoList[0].isBeingEdited).toBeUndefined();
+				expect(vm.toDoList[0].priority).toBe(1);
+				expect(toastr.warning).toHaveBeenCalled();
+			});
+		});
+		describe ("the close todos functions", function() {
+			beforeEach(inject(function() {
+				vm = $controller('VSTDACtrl', {
+					$scope: $scope,
+					VSTDAFactory: VSTDAFactory,
+					toastr, toastr
+				});
+				vm.toDoList = [
+					{vstdaEntryId: 1, isBeingEdited: true},
+					{vstdaEntryId: 2, isBeingEdited: true}
+				];
+			}));
+			it("should set all the todos as not being edited", function() {
+				vm.closeTable();
+				expect(vm.toDoList[0].isBeingEdited).toBe(false);
+				expect(vm.toDoList[1].isBeingEdited).toBe(false);
+			});
+			it("should set all the todos except for the selected one as being edited", function() {
+				vm.closeAllOtherItems(1);
+				expect(vm.toDoList[0].isBeingEdited).toBe(true);
+				expect(vm.toDoList[1].isBeingEdited).toBe(false);
+			});
+		})
 	})
 
 })

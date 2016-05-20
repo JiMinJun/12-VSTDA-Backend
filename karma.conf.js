@@ -27,7 +27,8 @@ module.exports = function(config) {
       'app/app.js',
       'app/VSTDA.ctrl.js',
       'app/VSTDA.factory.js',
-      'tests/VSTDA.ctrl.spec.js'
+      'tests/VSTDA.ctrl.spec.js',
+      'tests/VSTDA.factory.spec.js'
     ],
 
 

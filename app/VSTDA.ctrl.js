@@ -7,16 +7,19 @@
         'VSTDAFactory',
         '$filter',
         'toastr',
-
 	    function VSTDACtrl(VSTDAFactory, $filter, toastr) {
 	        var vm = this;
-	        vm.title = 'VSTDACtrl';	        
+	        vm.title = 'VSTDACtrl';
+/*	        vm.toDoList = [];*/	        
 
 	        ////////////////
 //get ToDoData. called on activate
 	        vm.getToDo = function() {
 	        	VSTDAFactory.getToDoData().then(function (response) {
 	        		vm.toDoList = response.data;
+	        		vm.toDoList.forEach(function(todo) {
+	        			todo.updatedPriority = todo.priority;
+	        		});
 	        	});
 	        };
 
@@ -34,7 +37,7 @@
         				alert("This item already exists");
         				duplicate = true;
         			}
-        		})
+        		});
         		if (duplicate === true) {
         			return;
         		}	
@@ -44,10 +47,9 @@
 	        	VSTDAFactory.addToDoData(newToDo).then(function (response) {
 	        		vm.toDoList.push(response.data);
 	        		console.log(vm.toDoList);
-	        	}),function(error) {
-	        		console.log(error);
-	        		alert("There was an error adding the newToDo item");
-	        	};
+	        	},function(error) {
+	        		toastr.warning("There was an error adding the newToDo item");
+	        	});
 	        	vm.newToDo = {};
 	        };
 
@@ -56,23 +58,16 @@
 	        	VSTDAFactory.deleteToDoData(todo.vstdaEntryId)
 	        	.then(function (response) {
 	        		vm.toDoList.splice(index, 1);
-	        		console.log(response);
 	        		toastr.success('"'+ response.data.description + '"' + " was deleted");	        	
 	        	},function(error) {
 	        		toastr.warning("This item could not be deleted. Please try again later");
-	        		console.log(error);
 	        	});
 	        };
 
 //updated todo
 	        vm.saveToDo = function (todo) {
-
 	        	if (!todo.updatedDescription) {
 	        		todo.updatedDescription = todo.description;
-	        	}
-
-	        	if (!todo.updatedPriority) {
-	        		todo.updatedPriority = 0;
 	        	}
 
 	        	var updatedTodo = {
@@ -84,16 +79,17 @@
 
 	        	VSTDAFactory.saveToDoData(updatedTodo)
 	        	.then(function(response) {
-
 	        		vm.toDoList.forEach(function(element) {
 	        			if (response.vstdaEntryId == element.vstdaEntryId) {
 	        				element.description = response.description;
 	        				element.priority = response.priority;
-	        			};
-	        			vm.closeTable();
+	        			}
 	        			todo.updatedDescription = null;
-	        			todo.updatedPriority = null;
+	        			vm.closeTable();
+	        			
 	        		});
+	        	},function() {
+	        		toastr.warning("Could not save item. Please try again momentarily.");
 	        	});
 	        };
 
@@ -104,17 +100,12 @@
 	        }*/
 //order items
 			vm.sortToDo = function (order) {
-
 		        vm.toDoList = $filter('orderBy')(vm.toDoList, order);
-		    };
-
-	        
-
+		    };	        
 //closes the table when something else is clicked
 	        vm.closeTable = function() {
 		    	vm.toDoList.forEach(function(element) {
 		    		element.isBeingEdited = false;
-		    		element.description = element.description;
 		    	});
     		};
 
@@ -122,9 +113,8 @@
 		    	vm.toDoList.forEach(function(element) {
 		    		if(element.vstdaEntryId !== id) {
 		    			element.isBeingEdited = false;
-		    			element.titleProgress = element.description;
 		    		}
 		    	});
 		    };
-	    }])
+	    }]);
 })();

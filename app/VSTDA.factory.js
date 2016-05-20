@@ -8,7 +8,7 @@
     	'$q',
     	'toastr',
 	    function VSTDAFactory($http, $q, toastr) {
-	    	var vstdaUrl = 'http://localhost:54111/api/VSTDAEntries'
+	    	var vstdaUrl = 'http://localhost:54111/api/VSTDAEntries';
 
 //get ToDo activates upon load
 	        function getToDoData() {
@@ -19,14 +19,12 @@
 	        		url: vstdaUrl
 	        	}).then(function (response) {
 	        		defer.resolve(response);
-	        	}),function(error) {
+	        	},function(error) {
 	        		defer.reject(error);
 	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
-	        	}
-
+	        	});
 	        	return defer.promise;
-	        };
-
+	        }
 //add new ToDoItem
 	        function addToDoData(newToDoEntry) {
 	        	var defer = $q.defer();
@@ -37,12 +35,12 @@
 	        		data: newToDoEntry
 	        	}).then(function(response) {
 	        		defer.resolve(response);
-	        	}),function(error) {
+	        	},function(error) {
 	        		defer.reject(error);
 	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
-	        	}
+	        	});
 	        	return defer.promise;
-	        };
+	        }
 
 //delete tododata
 	        function deleteToDoData(todoId) {
@@ -56,10 +54,9 @@
 	        	},function(error) {
 	        		defer.reject(error);
 	        		toastr.error('error: ' + error.data + '<br/>status: ' + error.statusText);
-	            })
-
+	            });
 	        	return defer.promise;
-	        };
+	        }
 
 //update tododata
 			function saveToDoData(todo) {
@@ -70,13 +67,14 @@
 					url: vstdaUrl + '/' + todo.vstdaEntryId,
 					data: todo
 				}).then (function (response) {
-					defer.resolve(response.config.data);	
+					defer.resolve(response.config.data);
+					console.log(response);	
 				},function(error) {
+					defer.reject(error);
 					toastr.error('error: ' + error.config.data + '<br/>status: ' + error.statusText);
-				})
-
+				});
 				return defer.promise;
-			};
+			}
 	        return {
 	            getToDoData: getToDoData,
 	            addToDoData: addToDoData,
