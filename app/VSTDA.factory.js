@@ -67,8 +67,7 @@
 					url: vstdaUrl + '/' + todo.vstdaEntryId,
 					data: todo
 				}).then (function (response) {
-					defer.resolve(response.config.data);
-					console.log(response);	
+					defer.resolve(response.config.data);	
 				},function(error) {
 					defer.reject(error);
 					toastr.error('error: ' + error.config.data + '<br/>status: ' + error.statusText);

@@ -46,7 +46,6 @@
 
 	        	VSTDAFactory.addToDoData(newToDo).then(function (response) {
 	        		vm.toDoList.push(response.data);
-	        		console.log(vm.toDoList);
 	        	},function(error) {
 	        		toastr.warning("There was an error adding the newToDo item");
 	        	});
@@ -85,8 +84,7 @@
 	        				element.priority = response.priority;
 	        			}
 	        			todo.updatedDescription = null;
-	        			vm.closeTable();
-	        			
+	        			vm.closeTable();		
 	        		});
 	        	},function() {
 	        		toastr.warning("Could not save item. Please try again momentarily.");
