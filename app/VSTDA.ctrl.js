@@ -79,9 +79,12 @@
 	        	VSTDAFactory.saveToDoData(updatedTodo)
 	        	.then(function(response) {
 	        		vm.toDoList.forEach(function(element) {
+
 	        			if (response.vstdaEntryId == element.vstdaEntryId) {
+	        				console.log(element);
 	        				element.description = response.description;
-	        				element.priority = response.priority;
+	        				element.priority = parseInt(response.priority);
+	        				element.updatedPriority = parseInt(response.priority);
 	        			}
 	        			todo.updatedDescription = null;
 	        			vm.closeTable();		
